@@ -12,7 +12,7 @@ namespace MyShop.WebUI.Controllers
 {
     public class ProductManagerController : Controller
     {
-
+        
         ProductRepository context;
 
         public ProductManagerController()
@@ -60,7 +60,7 @@ namespace MyShop.WebUI.Controllers
                 return View(product);
             }
         }
-
+           
         [HttpPost]
         public ActionResult Edit(Product product,string Id)
         {
@@ -118,6 +118,6 @@ namespace MyShop.WebUI.Controllers
                 return RedirectToAction("index");
 
             }
-        }
+        }   
     }
 }   
