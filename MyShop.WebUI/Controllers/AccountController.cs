@@ -19,7 +19,7 @@ namespace MyShop.WebUI.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        IRepository<Customer> customerRepository;
+        private IRepository<Customer> customerRepository;
 
 
 
