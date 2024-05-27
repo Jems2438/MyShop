@@ -169,6 +169,7 @@ namespace MyShop.WebUI.Controllers
                         UserId = user.Id
                     };
 
+
                     customerRepository.Insert(customer);
                     customerRepository.Commit();
 
