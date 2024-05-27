@@ -156,6 +156,23 @@ namespace MyShop.WebUI.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //register the customer model 
+                    Customer customer = new Customer()
+                    {
+                        City = model.City,
+                        Email = model.Email,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        State = model.State,
+                        Street = model.Street,
+                        ZipCode = model.ZipCode,
+                        UserId = user.Id
+                    };
+
+
+                    customerRepository.Insert(customer);
+                    customerRepository.Commit();
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
