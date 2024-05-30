@@ -93,5 +93,22 @@ namespace MyShop.WebUI.Controllers
             ViewBag.OrderId = OrderId;
             return View();
         }
+  
+        public ActionResult Increment(string Id)
+        {
+            basketService.Increment(this.HttpContext, Id);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Decrement(string Id)
+        {
+            basketService.Decrement(this.HttpContext, Id); 
+            return RedirectToAction("Index");
+        }
+
+       
+
+
+       
     }
 }

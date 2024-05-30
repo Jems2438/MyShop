@@ -8,11 +8,12 @@
 <div class="col-md-2">
     <h4>Filter By Category</h4>
     <div class="list-group">
-        @Html.ActionLink("All","Index", null, new { @class = Request["Category"]==null? "list-group-item active" : "list-group-item" })
-        @foreach(var cat in Model.ProductCategories)
-            {
-                @Html.ActionLink(cat.Category,"Index",new{ Category=cat.Category },new { @class = Request["Category"] == cat.Category ? "list-group-item active" : "list-group-item" })
-            }
+        @Html.ActionLink("All", "Index", null, new { @class = Request["Category"] == null ? "list-group-item active" : "list-group-item" })
+        @foreach (var cat in Model.ProductCategories)
+        {
+            @Html.ActionLink(cat.Category, "Index", new { Category = cat.Category }, new { @class = Request["Category"] == cat.Category ? "list-group-item active" : "list-group-item" })
+        }
+       
     </div>
 </div>
 <div class="col-md-10">
@@ -30,12 +31,16 @@
                 <p>@item.Description</p>
             </div>
             <div class="col-md-12">
+                <strong><a href="@Url.Action("Index" ,"WatchList", new { id = item.Id })">+</a> </strong>
+            </div>
+            <div class="col-md-12">
                 <h4>@item.Price</h4>
             </div>
             <div class="col-md-12">
                 <a href="@Url.Action("AddToBasket", "Basket" , new {Id = item.Id})" class="btn btn-default">Add to Basket</a>
             </div>
         </div>
-    }
+        
+     }
 </div>
 <div class="cold-md-12 clearfix"/>

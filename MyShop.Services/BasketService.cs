@@ -157,6 +157,33 @@ namespace MyShop.Services
             basket.BasketItems.Clear();
             basketContext.Commit();
         }
-        
+
+        public void Increment(HttpContextBase httpContext, string itemId)
+        {
+            Basket basket = GetBasket(httpContext, true);
+            BasketItem item = basket.BasketItems.FirstOrDefault(i => i.Id == itemId);
+            item.Quantity = item.Quantity + 1;
+            basketContext.Commit();
+        }
+
+        public void Decrement(HttpContextBase httpContext, string itemId)
+        {
+            Basket basket = GetBasket(httpContext, true);
+            BasketItem item = basket.BasketItems.FirstOrDefault(i => i.Id == itemId);
+            if(item.Quantity >1)
+            {
+                item.Quantity = item.Quantity - 1;
+
+            }
+            else
+            {
+               RemoveFromBasket(httpContext,itemId);
+            }
+            basketContext.Commit();
+
+        }  
+
+       
+      
     }
 }
