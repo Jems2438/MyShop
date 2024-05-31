@@ -11,35 +11,56 @@ namespace MyShop.Services
     public class WatchListService : IWatchListService
     {
         IRepository<Product> productContext;
-        IRepository<WatchList> watchList;
+        IRepository<WatchList> watchListContext;
+        IRepository<Customer> customerContext;
 
-        public WatchListService(IRepository<Product> ProductContext, IRepository<WatchList> WatchList)
+        public WatchListService(IRepository<Product> ProductContext, IRepository<WatchList> WatchList, IRepository<Customer> Customers)
         {
             this.productContext = ProductContext;
-            this.watchList = WatchList;
+            this.watchListContext = WatchList;
+            this.customerContext = Customers;
         }
 
         public List<WatchList> GetWatchLists()
         {
-            List<WatchList> watchlists = watchList.Collection().ToList();
+            List<WatchList> watchlists = watchListContext.Collection().ToList();
             return watchlists;
         }
-
-        public void AddToWatchList(string Id)
+        public List<Product> ShowProduct(string Id)
         {
-            List<WatchList> watchlists = watchList.Collection().ToList();
+            List<Product> tempData = productContext.Collection().ToList();
             Product product = productContext.Find(Id);
 
-            if (watchList != product)
+            List<WatchList> watchlists = watchListContext.Collection().ToList();
+            var Available = watchListContext.Collection().Any(x => x.ProductId == Id);
+            if (!Available)
             {
-                watchlists.Add(
-                        new WatchList()
+               
+            }
+            else
+            {
+                               
+            }
+        }
+        
+        public void AddToWatchList(string Id)
+        {
+            List<WatchList> watchlists = watchListContext.Collection().ToList();
+            Product product = productContext.Find(Id);
+
+            var Available = watchListContext.Collection().Any(x => x.ProductId == Id );
+            if ( !Available )
+            {
+               var  watchlist = 
+                    new  WatchList
                         {
                             ProductId = Id,
                             UserId = Id
-                        }       
-                    );
+                        };
+                watchListContext.Insert(watchlist);
+                watchListContext.Commit();
             }
+
         }
     }
 }

@@ -14,18 +14,20 @@ namespace MyShop.WebUI.Controllers
 
         public WatchListController(IWatchListService watchListService)
         {
-            this.WatchListService = watchListService;
+            this.WatchListService = watchListService;  
         }
         
         public ActionResult Index()
         {
+            
             List<WatchList> watchlists = WatchListService.GetWatchLists();
             return View(watchlists);
         }
 
-        public ActionResult AddToWatchList(string Id)
+        public ActionResult AddToWatchList(string Id )
         {
-
+            WatchListService.AddToWatchList(Id);
+            return RedirectToAction("Index");
         }
 
     }
