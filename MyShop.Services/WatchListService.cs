@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MyShop.Core.Contracts;
 using MyShop.Core.Models;
+using MyShop.Core.ViewModels;
 
 namespace MyShop.Services
 {
@@ -13,6 +14,7 @@ namespace MyShop.Services
         IRepository<Product> productContext;
         IRepository<WatchList> watchListContext;
         IRepository<Customer> customerContext;
+     
 
         public WatchListService(IRepository<Product> ProductContext, IRepository<WatchList> WatchList, IRepository<Customer> Customers)
         {
@@ -21,28 +23,37 @@ namespace MyShop.Services
             this.customerContext = Customers;
         }
 
-        public List<WatchList> GetWatchLists()
+        public ProductListViewModel GetWatchLists(string Id)
         {
-            List<WatchList> watchlists = watchListContext.Collection().ToList();
-            return watchlists;
-        }
-        public List<Product> ShowProduct(string Id)
-        {
-            List<Product> tempData = productContext.Collection().ToList();
-            Product product = productContext.Find(Id);
+            List<Product> products;
+            products = productContext.Collection().ToList();
+
+            ProductListViewModel model = new ProductListViewModel();
 
             List<WatchList> watchlists = watchListContext.Collection().ToList();
-            var Available = watchListContext.Collection().Any(x => x.ProductId == Id);
-            if (!Available)
-            {
-               
-            }
-            else
-            {
-                               
-            }
+
+            var whistlist = watchListContext.Collection().Where(x => x.UserId == Id);
+
+            var ListOfProduct = whistlist.Select(x => x.ProductId );
+
+            var result =   (from p in products
+                           join q in whistlist on p.Id equals q.ProductId
+                           select new Product
+                           {
+                                Id = p.Id,
+                                Name = p.Name,
+                                Image = p.Image,
+                                Price = p.Price
+
+                           }
+                           ).ToList();
+
+            model.Products = result;
+
+            return model;
+          
         }
-        
+      
         public void AddToWatchList(string Id)
         {
             List<WatchList> watchlists = watchListContext.Collection().ToList();

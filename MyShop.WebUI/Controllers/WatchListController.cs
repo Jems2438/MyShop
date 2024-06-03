@@ -1,5 +1,6 @@
 ﻿using MyShop.Core.Contracts;
 using MyShop.Core.Models;
+using MyShop.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace MyShop.WebUI.Controllers
     {
         IWatchListService WatchListService;
 
+
         public WatchListController(IWatchListService watchListService)
         {
             this.WatchListService = watchListService;  
@@ -20,8 +22,8 @@ namespace MyShop.WebUI.Controllers
         public ActionResult Index()
         {
             
-            List<WatchList> watchlists = WatchListService.GetWatchLists();
-            return View(watchlists);
+            ProductListViewModel OutPut = WatchListService.GetWatchLists(User.Identity.Name);
+            return View(OutPut);
         }
 
         public ActionResult AddToWatchList(string Id )

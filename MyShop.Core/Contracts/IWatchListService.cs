@@ -1,4 +1,5 @@
 ﻿using MyShop.Core.Models;
+using MyShop.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace MyShop.Core.Contracts
 {
     public interface IWatchListService
     {
-        List<WatchList> GetWatchLists();
+        ProductListViewModel GetWatchLists(string Id);
 
         void AddToWatchList(string Id);
     }
