@@ -28,9 +28,14 @@ namespace MyShop.WebUI.Controllers
 
         public ActionResult AddToWatchList(string Id )
         {
-            WatchListService.AddToWatchList(Id);
+            WatchListService.AddToWatchList(Id , User.Identity.Name);
             return RedirectToAction("Index");
         }
 
+        public ActionResult RemoveToWatchList(string Id)
+        {
+            WatchListService.RemoveToWatchList(Id, User.Identity.Name);
+            return RedirectToAction("Index");
+        }
     }
 }

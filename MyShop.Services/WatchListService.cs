@@ -23,52 +23,62 @@ namespace MyShop.Services
             this.customerContext = Customers;
         }
 
-        public ProductListViewModel GetWatchLists(string Id)
+        public ProductListViewModel GetWatchLists(string emailId)
         {
-            List<Product> products;
-            products = productContext.Collection().ToList();
+
+            var customers = customerContext.Collection().FirstOrDefault(x => x.Email == emailId);
+
+            var watchlists = watchListContext.Collection().ToList();
+            var productList = productContext.Collection().ToList();
+
+            var products = productList.Where(x => watchlists.Where(y => y.UserId == customers.UserId)
+                                      .Select(z => z.ProductId).ToList()
+                                      .Contains(x.Id)).ToList();
 
             ProductListViewModel model = new ProductListViewModel();
 
-            List<WatchList> watchlists = watchListContext.Collection().ToList();
-
-            var whistlist = watchListContext.Collection().Where(x => x.UserId == Id);
-
-            var ListOfProduct = whistlist.Select(x => x.ProductId );
-
-            var result =   (from p in products
-                           join q in whistlist on p.Id equals q.ProductId
-                           select new Product
-                           {
-                                Id = p.Id,
-                                Name = p.Name,
-                                Image = p.Image,
-                                Price = p.Price
-
-                           }
-                           ).ToList();
-
-            model.Products = result;
+            model.Products = products;
 
             return model;
           
         }
       
-        public void AddToWatchList(string Id)
+        public void AddToWatchList(string Id, string email)
         {
             List<WatchList> watchlists = watchListContext.Collection().ToList();
             Product product = productContext.Find(Id);
 
-            var Available = watchListContext.Collection().Any(x => x.ProductId == Id );
+            var customers = customerContext.Collection().FirstOrDefault(x => x.Email == email);
+
+
+            var Available = watchListContext.Collection().Any(x => x.ProductId == Id && x.UserId == customers.UserId);
             if ( !Available )
             {
                var  watchlist = 
                     new  WatchList
                         {
                             ProductId = Id,
-                            UserId = Id
-                        };
+                            UserId = customers.UserId
+                    };
                 watchListContext.Insert(watchlist);
+                watchListContext.Commit();
+            }
+
+        }
+
+        public void RemoveToWatchList(string Id, string email)
+        {
+            var  watchlists = watchListContext.Collection().ToList();
+            
+            var customers = customerContext.Collection().FirstOrDefault(x => x.Email == email);
+
+            var RemoveId = watchlists.FirstOrDefault(x => x.ProductId == Id && x.UserId == customers.UserId);
+
+            if (RemoveId != null)
+            {
+                var watchlist = RemoveId.Id;
+                     
+                watchListContext.Delete(watchlist);
                 watchListContext.Commit();
             }
 

@@ -33,6 +33,8 @@
             </div>
             <div class="col-md-12">
                 <strong><a href="@Url.Action("AddToWatchList" ,"WatchList", new { id = item.Id })">+</a> </strong>
+
+
             </div>
             <div class="col-md-12">
                 <h4>@item.Price</h4>
@@ -40,6 +42,8 @@
             <div class="col-md-12">
                 <a href="@Url.Action("AddToBasket", "Basket" , new {Id = item.Id})" class="btn btn-default">Add to Basket</a>
             </div>
+            
+
         </div>
         
      }

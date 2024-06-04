@@ -12,6 +12,8 @@ namespace MyShop.Core.Contracts
     {
         ProductListViewModel GetWatchLists(string Id);
 
-        void AddToWatchList(string Id);
+        void AddToWatchList(string Id, string id);
+
+        void RemoveToWatchList(string Id, string email);
     }
 }
